@@ -41,7 +41,27 @@ class Automaton::Daneel
     else
       @facing += 1
     end
-
   end
+
+  def move
+    if @facing == 0     #north
+      @pos_y += 1 if board.placeable?(@pos_x, @pos_y+1)
+
+    elsif @facing == 2  #south
+      @pos_y -= 1 if board.placeable?(@pos_x, @pos_y-1)
+
+    elsif @facing == 1  #east
+      @pos_x += 1 if board.placeable?(@pos_x+1, @pos_y)
+
+    elsif @facing == 3  #west
+      @pos_x -= 1 if board.placeable?(@pos_x-1, @pos_y)
+
+    end
+  end
+
+  def report
+    "My current position is X:#{pos_x} Y:#{pos_y} facing #{facing}"
+  end
+
 
 end
