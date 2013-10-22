@@ -1,24 +1,31 @@
 # Automaton
 
-TODO: Write a gem description
+Just a Locomote related test
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Clone from github
 
-    gem 'automaton'
+    git clone git@github.com:maleko/automaton.git
 
-And then execute:
+And then execute
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install automaton
 
 ## Usage
 
-TODO: Write usage instructions here
+Run it by executing
+
+    $ bin/automaton
+
+For help and a list of commands
+
+    👾: help
+
+
+It accepts both fully capitalised commands or fully downcased commands.
+
 
 ## Contributing
 
