@@ -16,13 +16,10 @@ class Automaton::Daneel
   end
 
   def placed_at(pos_x, pos_y, facing)
-    if valid_position? pos_x, pos_y, facing
-      @pos_x  = pos_x
-      @pos_y  = pos_y
-      @facing = ALLOWABLE_DIRECTIONS.invert[facing]
-    else
-      return false
-    end
+    return false unless valid_position? pos_x, pos_y, facing
+    @pos_x  = pos_x
+    @pos_y  = pos_y
+    @facing = ALLOWABLE_DIRECTIONS.invert[facing]
     true
   end
 

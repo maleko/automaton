@@ -95,6 +95,10 @@ describe Automaton::Daneel do
         expect(subject.facing).to eql Automaton::Daneel::ALLOWABLE_DIRECTIONS.invert[facing]
       end
 
+      it "returns true" do
+        expect(subject.placed_at(pos_x, pos_y, facing)).to be_true
+      end
+
     end
 
     context "invalid position" do
