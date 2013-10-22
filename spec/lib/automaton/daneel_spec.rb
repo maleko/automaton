@@ -255,7 +255,7 @@ describe Automaton::Daneel do
       end
 
       it "reports its position" do
-        expect(subject.report).to eql "My current position is X:#{pos_x} Y:#{pos_y} facing #{facing}"
+        expect(subject.report).to eql "My current position is X:#{pos_x} Y:#{pos_y} facing #{facing.capitalize}"
       end
 
     end
