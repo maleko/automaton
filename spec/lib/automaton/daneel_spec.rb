@@ -56,7 +56,7 @@ describe Automaton::Daneel do
 
         let(:placeable) { true }
 
-        it "returns false if the position is invalid" do
+        it "returns true if the position is valid" do
           board.stub(:placeable?).and_return placeable
           expect(subject).to eq true
         end
@@ -122,47 +122,59 @@ describe Automaton::Daneel do
 
     subject { automaton }
 
-    before do
-      subject.placed_at(pos_x, pos_y, facing)
-      subject.turn_left
-    end
+    context "placed" do
 
-    context "originally facing north" do
+      before do
+        subject.placed_at(pos_x, pos_y, facing)
+        subject.turn_left
+      end
 
-      let(:facing) { "north" }
+      context "originally facing north" do
 
-      it "should face west" do
-        expect(subject.facing).to eql "west"
+        let(:facing) { "north" }
+
+        it "should face west" do
+          expect(subject.facing).to eql "west"
+        end
+
+      end
+
+      context "originally facing east" do
+
+        let(:facing) { "east" }
+
+        it "should face north" do
+          expect(subject.facing).to eql "north"
+        end
+
+      end
+
+      context "originally facing south" do
+
+        let(:facing) { "south" }
+
+        it "should face east" do
+          expect(subject.facing).to eql "east"
+        end
+
+      end
+
+      context "originally facing west" do
+
+        let(:facing) { "west" }
+
+        it "should face south" do
+          expect(subject.facing).to eql "south"
+        end
+
       end
 
     end
 
-    context "originally facing east" do
+    context "unplaced" do
 
-      let(:facing) { "east" }
-
-      it "should face north" do
-        expect(subject.facing).to eql "north"
-      end
-
-    end
-
-    context "originally facing south" do
-
-      let(:facing) { "south" }
-
-      it "should face east" do
-        expect(subject.facing).to eql "east"
-      end
-
-    end
-
-    context "originally facing west" do
-
-      let(:facing) { "west" }
-
-      it "should face south" do
-        expect(subject.facing).to eql "south"
+      it "returns false" do
+        expect(subject.turn_left).to eql false
       end
 
     end
@@ -173,47 +185,59 @@ describe Automaton::Daneel do
 
     subject { automaton }
 
-    before do
-      subject.placed_at(pos_x, pos_y, facing)
-      subject.turn_right
-    end
+    context "placed" do
 
-    context "originally facing north" do
+      before do
+        subject.placed_at(pos_x, pos_y, facing)
+        subject.turn_right
+      end
 
-      let(:facing) { "north" }
+      context "originally facing north" do
 
-      it "should face east" do
-        expect(subject.facing).to eql "east"
+        let(:facing) { "north" }
+
+        it "should face east" do
+          expect(subject.facing).to eql "east"
+        end
+
+      end
+
+      context "originally facing east" do
+
+        let(:facing) { "east" }
+
+        it "should face south" do
+          expect(subject.facing).to eql "south"
+        end
+
+      end
+
+      context "originally facing south" do
+
+        let(:facing) { "south" }
+
+        it "should face west" do
+          expect(subject.facing).to eql "west"
+        end
+
+      end
+
+      context "originally facing west" do
+
+        let(:facing) { "west" }
+
+        it "should face north" do
+          expect(subject.facing).to eql "north"
+        end
+
       end
 
     end
 
-    context "originally facing east" do
+    context "unplaced" do
 
-      let(:facing) { "east" }
-
-      it "should face south" do
-        expect(subject.facing).to eql "south"
-      end
-
-    end
-
-    context "originally facing south" do
-
-      let(:facing) { "south" }
-
-      it "should face west" do
-        expect(subject.facing).to eql "west"
-      end
-
-    end
-
-    context "originally facing west" do
-
-      let(:facing) { "west" }
-
-      it "should face north" do
-        expect(subject.facing).to eql "north"
+      it "returns false" do
+        expect(subject.turn_right).to eql false
       end
 
     end
@@ -224,12 +248,24 @@ describe Automaton::Daneel do
 
     subject { automaton }
 
-    before do
-      subject.placed_at pos_x, pos_y, facing
+    context "placed" do
+
+      before do
+        subject.placed_at pos_x, pos_y, facing
+      end
+
+      it "reports its position" do
+        expect(subject.report).to eql "My current position is X:#{pos_x} Y:#{pos_y} facing #{facing}"
+      end
+
     end
 
-    it "reports its position" do
-      expect(subject.report).to eql "My current position is X:#{pos_x} Y:#{pos_y} facing #{facing}"
+    context "unplaced" do
+
+      it "denies all knowledge of its position" do
+        expect(subject.report).to eql "I have no idea where I am"
+      end
+
     end
 
   end
@@ -238,140 +274,177 @@ describe Automaton::Daneel do
 
     subject { automaton }
 
-    before do
-      subject.placed_at pos_x, pos_y, facing
-      subject.move
+    context "placed" do
+
+      before do
+        subject.placed_at pos_x, pos_y, facing
+        subject.move
+      end
+
+      context "move outside of board" do
+
+        context "western edge" do
+
+          let(:pos_x)   { 0 }
+          let(:facing)  { "west" }
+
+          it "stays where it is" do
+            expect(subject.pos_x).to eq pos_x
+          end
+
+          it "faces the same direction" do
+            expect(subject.facing).to eq facing
+          end
+
+        end
+
+        context "eastern edge" do
+
+          let(:pos_x)   { 4 }
+          let(:facing)  { "east" }
+
+          it "stays where it is" do
+            expect(subject.pos_x).to eq pos_x
+          end
+
+          it "faces the same direction" do
+            expect(subject.facing).to eq facing
+          end
+
+        end
+
+        context "northern edge" do
+
+          let(:pos_y)   { 4 }
+          let(:facing)  { "north" }
+
+          it "stays where it is" do
+            expect(subject.pos_y).to eq pos_y
+          end
+
+          it "faces the same direction" do
+            expect(subject.facing).to eq facing
+          end
+
+        end
+
+        context "southern edge" do
+
+          let(:pos_y)   { 0 }
+          let(:facing)  { "south" }
+
+          it "stays where it is" do
+            expect(subject.pos_y).to eq pos_y
+          end
+
+          it "faces the same direction" do
+            expect(subject.facing).to eq facing
+          end
+
+        end
+
+      end
+
+
+      context "move within board" do
+
+        let(:pos_x)   { 3 }
+        let(:pos_y)   { 3 }
+
+        context "facing north" do
+
+          let(:facing)  { "north" }
+
+          it "moves forward one step" do
+            expect(subject.pos_y).to eq 4
+          end
+
+          it "doesn't change the other axis" do
+            expect(subject.pos_x).to eq pos_x
+          end
+
+        end
+
+        context "facing south" do
+
+          let(:facing)  { "south" }
+
+          it "moves forward one step" do
+            expect(subject.pos_y).to eq 2
+          end
+
+          it "doesn't change the other axis" do
+            expect(subject.pos_x).to eq pos_x
+          end
+
+        end
+
+        context "facing east" do
+
+          let(:facing)  { "east" }
+
+          it "moves forward one step" do
+            expect(subject.pos_x).to eq 4
+          end
+
+          it "doesn't change the other axis" do
+            expect(subject.pos_y).to eq pos_y
+          end
+
+        end
+
+        context "facing west" do
+
+          let(:facing)  { "west" }
+
+          it "moves forward one step" do
+            expect(subject.pos_x).to eq 2
+          end
+
+          it "doesn't change the other axis" do
+            expect(subject.pos_y).to eq pos_y
+          end
+
+        end
+
+      end
+
     end
 
-    context "move outside of board" do
+    context "not placed yet" do
 
-      context "western edge" do
-
-        let(:pos_x)   { 0 }
-        let(:facing)  { "west" }
-
-        it "stays where it is" do
-          expect(subject.pos_x).to eq pos_x
-        end
-
-        it "faces the same direction" do
-          expect(subject.facing).to eq facing
-        end
-
-      end
-
-      context "eastern edge" do
-
-        let(:pos_x)   { 4 }
-        let(:facing)  { "east" }
-
-        it "stays where it is" do
-          expect(subject.pos_x).to eq pos_x
-        end
-
-        it "faces the same direction" do
-          expect(subject.facing).to eq facing
-        end
-
-      end
-
-      context "northern edge" do
-
-        let(:pos_y)   { 4 }
-        let(:facing)  { "north" }
-
-        it "stays where it is" do
-          expect(subject.pos_y).to eq pos_y
-        end
-
-        it "faces the same direction" do
-          expect(subject.facing).to eq facing
-        end
-
-      end
-
-      context "southern edge" do
-
-        let(:pos_y)   { 0 }
-        let(:facing)  { "south" }
-
-        it "stays where it is" do
-          expect(subject.pos_y).to eq pos_y
-        end
-
-        it "faces the same direction" do
-          expect(subject.facing).to eq facing
-        end
-
-      end
-
-    end
-
-    context "move within board" do
-
-      let(:pos_x)   { 3 }
-      let(:pos_y)   { 3 }
-
-      context "facing north" do
-
-        let(:facing)  { "north" }
-
-        it "moves forward one step" do
-          expect(subject.pos_y).to eq 4
-        end
-
-        it "doesn't change the other axis" do
-          expect(subject.pos_x).to eq pos_x
-        end
-
-      end
-
-      context "facing south" do
-
-        let(:facing)  { "south" }
-
-        it "moves forward one step" do
-          expect(subject.pos_y).to eq 2
-        end
-
-        it "doesn't change the other axis" do
-          expect(subject.pos_x).to eq pos_x
-        end
-
-      end
-
-      context "facing east" do
-
-        let(:facing)  { "east" }
-
-        it "moves forward one step" do
-          expect(subject.pos_x).to eq 4
-        end
-
-        it "doesn't change the other axis" do
-          expect(subject.pos_y).to eq pos_y
-        end
-
-      end
-
-      context "facing west" do
-
-        let(:facing)  { "west" }
-
-        it "moves forward one step" do
-          expect(subject.pos_x).to eq 2
-        end
-
-        it "doesn't change the other axis" do
-          expect(subject.pos_y).to eq pos_y
-        end
-
+      it "returns false" do
+        expect(subject.move).to eql false
       end
 
     end
 
   end
 
+  describe "#placed?" do
 
+    subject { automaton }
+
+    context "has been placed" do
+
+      before do
+        subject.placed_at pos_x, pos_y, facing
+      end
+
+      it "returns true" do
+        expect(subject.placed?).to be_true
+      end
+
+    end
+
+    context "has not been placed yet" do
+
+      it "returns false" do
+        expect(subject.placed?).to eql false
+      end
+
+    end
+
+  end
 
 end

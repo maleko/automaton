@@ -28,6 +28,8 @@ class Automaton::Daneel
   end
 
   def turn_left
+    return false unless placed?
+
     if @facing == ALLOWABLE_DIRECTIONS.first[0]
       @facing = ALLOWABLE_DIRECTIONS.max[0]
     else
@@ -36,6 +38,8 @@ class Automaton::Daneel
   end
 
   def turn_right
+    return false unless placed?
+
     if @facing == ALLOWABLE_DIRECTIONS.max[0]
       @facing = ALLOWABLE_DIRECTIONS.first[0]
     else
@@ -44,6 +48,8 @@ class Automaton::Daneel
   end
 
   def move
+    return false unless placed?
+
     if @facing == 0     #north
       @pos_y += 1 if board.placeable?(@pos_x, @pos_y+1)
 
@@ -60,8 +66,11 @@ class Automaton::Daneel
   end
 
   def report
-    "My current position is X:#{pos_x} Y:#{pos_y} facing #{facing}"
+    placed? ? "My current position is X:#{pos_x} Y:#{pos_y} facing #{facing}" : "I have no idea where I am"
   end
 
+  def placed?
+    !(pos_y.nil? && pos_y.nil?)
+  end
 
 end
