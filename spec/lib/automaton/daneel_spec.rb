@@ -9,9 +9,9 @@ describe Automaton::Daneel do
   let(:pos_y)     { rand Automaton::Board::ALLOWABLE_Y }
   let(:facing)    { Automaton::Daneel::ALLOWABLE_DIRECTIONS[rand(0..3)] }
 
-  describe "#placed_at" do
+  describe "#valid_position?" do
 
-    subject { automaton.placed_at(pos_x, pos_y, facing) }
+    subject { automaton.valid_position?(pos_x, pos_y, facing) }
 
     context "facing" do
 
@@ -63,6 +63,59 @@ describe Automaton::Daneel do
 
       end
 
+    end
+
+  end
+
+  describe "#placed_at" do
+
+    subject { automaton }
+
+    before do
+      subject.stub(:valid_position?).and_return(valid_position)
+    end
+
+    context "valid position" do
+
+      let(:valid_position) { true }
+
+      before do
+        subject.placed_at(pos_x, pos_y, facing)
+      end
+
+      it "sets the initial position x" do
+        expect(subject.pos_x).to eql pos_x
+      end
+
+      it "sets the initial position y" do
+        expect(subject.pos_y).to eql pos_y
+      end
+
+      it "sets the initial direction" do
+        expect(subject.facing).to eql Automaton::Daneel::ALLOWABLE_DIRECTIONS.invert[facing]
+      end
+
+    end
+
+    context "invalid position" do
+
+      let(:valid_position) { false }
+
+      before do
+        subject.placed_at(pos_x, pos_y, facing)
+      end
+
+      it "sets the initial position x" do
+        expect(subject.pos_x).to be_nil
+      end
+
+      it "sets the initial position y" do
+        expect(subject.pos_y).to be_nil
+      end
+
+      it "sets the initial direction" do
+        expect(subject.facing).to be_nil
+      end
 
     end
 
