@@ -95,5 +95,6 @@ console.addAlias('MOVE',    'move')
 console.addAlias('LEFT',    'left')
 console.addAlias('RIGHT',   'right')
 console.addAlias('REPORT',  'report')
+console.addAlias('q',       'exit')
 
 console.start("👾::",[''])
