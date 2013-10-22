@@ -7,6 +7,8 @@
 require 'highline'
 require 'cli-console'
 require 'awesome_print'
+require 'automaton/board'
+require 'automaton/daneel'
 
 module Automaton
 
@@ -27,42 +29,48 @@ module Automaton
 
     def initialize
       puts "Initialising Board....."
-
+      @board = Automaton::Board.new
       puts "Initialising Automaton......."
+      @automaton = Automaton::Daneel.new @board
     end
 
-    usage 'Usage: place x,v,f'
+    usage 'Usage: place x v f (i.e. place 0 0 north)'
     desc  'Places your automaton on the board'
     def place(params)
-      ap 'placing'
-      ap params
+      puts'placing'
+      @automaton.placed_at(params[0].to_i, params[1].to_i, params[2])
+      puts @automaton.report
     end
 
     usage 'Usage: move'
     desc  'Moves your automaton one unit forward'
     def move(params)
-      ap 'move'
+      puts 'moving'
+      @automaton.move
+      puts @automaton.report
     end
 
     usage 'Usage: left'
     desc  'Turns your automaton left'
     def left(params)
-      ap 'left'
+      puts 'left'
+      @automaton.turn_left
+      puts @automaton.report
     end
 
     usage 'Usage: right'
     desc  'Turns your automaton right'
     def right(params)
-      ap 'right'
+      puts 'right'
+      @automaton.turn_right
+      puts @automaton.report
     end
 
     usage 'Usage: report'
     desc  'Reports the location of your automaton'
     def report(params)
-      ap 'report'
+      puts @automaton.report
     end
-
-
 
   end
 
