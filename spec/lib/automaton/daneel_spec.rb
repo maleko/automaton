@@ -73,15 +73,12 @@ describe Automaton::Daneel do
 
     before do
       subject.stub(:valid_position?).and_return(valid_position)
+      subject.placed_at(pos_x, pos_y, facing)
     end
 
     context "valid position" do
 
       let(:valid_position) { true }
-
-      before do
-        subject.placed_at(pos_x, pos_y, facing)
-      end
 
       it "sets the initial position x" do
         expect(subject.pos_x).to eql pos_x
@@ -92,7 +89,7 @@ describe Automaton::Daneel do
       end
 
       it "sets the initial direction" do
-        expect(subject.facing).to eql Automaton::Daneel::ALLOWABLE_DIRECTIONS.invert[facing]
+        expect(subject.facing).to eql facing
       end
 
       it "returns true" do
@@ -104,10 +101,6 @@ describe Automaton::Daneel do
     context "invalid position" do
 
       let(:valid_position) { false }
-
-      before do
-        subject.placed_at(pos_x, pos_y, facing)
-      end
 
       it "sets the initial position x" do
         expect(subject.pos_x).to be_nil
@@ -124,5 +117,108 @@ describe Automaton::Daneel do
     end
 
   end
+
+  describe "#turn_left" do
+
+    subject { automaton }
+
+    before do
+      subject.placed_at(pos_x, pos_y, facing)
+      subject.turn_left
+    end
+
+    context "originally facing north" do
+
+      let(:facing) { "north" }
+
+      it "should face west" do
+        expect(subject.facing).to eql "west"
+      end
+
+    end
+
+    context "originally facing east" do
+
+      let(:facing) { "east" }
+
+      it "should face north" do
+        expect(subject.facing).to eql "north"
+      end
+
+    end
+
+    context "originally facing south" do
+
+      let(:facing) { "south" }
+
+      it "should face east" do
+        expect(subject.facing).to eql "east"
+      end
+
+    end
+
+    context "originally facing west" do
+
+      let(:facing) { "west" }
+
+      it "should face south" do
+        expect(subject.facing).to eql "south"
+      end
+
+    end
+
+  end
+
+  describe "#turn_right" do
+
+    subject { automaton }
+
+    before do
+      subject.placed_at(pos_x, pos_y, facing)
+      subject.turn_right
+    end
+
+    context "originally facing north" do
+
+      let(:facing) { "north" }
+
+      it "should face east" do
+        expect(subject.facing).to eql "east"
+      end
+
+    end
+
+    context "originally facing east" do
+
+      let(:facing) { "east" }
+
+      it "should face south" do
+        expect(subject.facing).to eql "south"
+      end
+
+    end
+
+    context "originally facing south" do
+
+      let(:facing) { "south" }
+
+      it "should face west" do
+        expect(subject.facing).to eql "west"
+      end
+
+    end
+
+    context "originally facing west" do
+
+      let(:facing) { "west" }
+
+      it "should face north" do
+        expect(subject.facing).to eql "north"
+      end
+
+    end
+
+  end
+
 
 end

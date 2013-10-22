@@ -11,6 +11,10 @@ class Automaton::Daneel
     @pos_y  = nil
   end
 
+  def facing
+    ALLOWABLE_DIRECTIONS[@facing]
+  end
+
   def valid_position?(pos_x, pos_y, facing)
     ALLOWABLE_DIRECTIONS.values.include?(facing) && board.placeable?(pos_x, pos_y)
   end
@@ -21,6 +25,23 @@ class Automaton::Daneel
     @pos_y  = pos_y
     @facing = ALLOWABLE_DIRECTIONS.invert[facing]
     true
+  end
+
+  def turn_left
+    if @facing == ALLOWABLE_DIRECTIONS.first[0]
+      @facing = ALLOWABLE_DIRECTIONS.max[0]
+    else
+      @facing -= 1
+    end
+  end
+
+  def turn_right
+    if @facing == ALLOWABLE_DIRECTIONS.max[0]
+      @facing = ALLOWABLE_DIRECTIONS.first[0]
+    else
+      @facing += 1
+    end
+
   end
 
 end
