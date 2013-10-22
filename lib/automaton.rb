@@ -97,4 +97,4 @@ console.addAlias('RIGHT',   'right')
 console.addAlias('REPORT',  'report')
 console.addAlias('q',       'exit')
 
-console.start("👾::",[''])
+console.start("👾", [''])
