@@ -7,7 +7,9 @@ class Automaton::Board
   ALLOWABLE_Y = 0..MAX_Y
 
   def placeable?(x, y)
-
+    return false if x < 0 || y < 0
+    return false if x > MAX_X || y > MAX_Y
+    true
   end
 
 end

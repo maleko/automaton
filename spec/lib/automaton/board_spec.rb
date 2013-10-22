@@ -22,4 +22,75 @@ describe Automaton::Board do
 
   end
 
+  describe "#placeable?" do
+
+    let(:board) { Automaton::Board.new }
+    let(:pos_x) { 0 }
+    let(:pos_y) { 0 }
+
+    subject     { board.placeable?(pos_x, pos_y) }
+
+    context "with negative numbers" do
+
+      context "for x" do
+
+        let(:pos_x) { -1 }
+
+        it { should == false }
+
+      end
+
+      context "for y" do
+
+        let(:pos_y) { -1 }
+
+        it { should == false }
+
+      end
+
+    end
+
+    context "within the range" do
+
+      context "for x" do
+
+         let(:pos_x) { rand Automaton::Board::ALLOWABLE_X }
+
+         it { should be_true }
+
+      end
+
+      context "for y" do
+
+         let(:pos_y) { rand Automaton::Board::ALLOWABLE_Y }
+
+         it { should be_true }
+
+      end
+
+    end
+
+    context "over the maximum number" do
+
+      context "for x" do
+
+        let(:pos_x) { 5 }
+
+        it { should == false }
+
+      end
+
+      context "for y" do
+
+        let(:pos_y) { 5 }
+
+        it { should == false }
+
+      end
+
+    end
+
+  end
+
+
 end
