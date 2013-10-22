@@ -38,7 +38,7 @@ module Automaton
     desc  'Places your automaton on the board'
     def place(params)
       puts'placing'
-      @automaton.placed_at(params[0].to_i, params[1].to_i, params[2])
+      @automaton.placed_at(params[0].to_i, params[1].to_i, params[2].downcase)
       puts @automaton.report
     end
 
@@ -80,7 +80,7 @@ io = HighLine.new
 automaton = Automaton::Application.new
 console = CLI::Console.new(io)
 
-console.addCommand('place',   automaton.method(:place),   'Places automaton')
+console.addCommand('place',   automaton.method(:place),   'Places automaton. i.e. "place 0 0 north"')
 console.addCommand('move',    automaton.method(:move),    'Move automaton')
 console.addCommand('left',    automaton.method(:left),    'Turn automaton left')
 console.addCommand('right',   automaton.method(:right),   'Turn automaton right')

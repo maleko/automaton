@@ -66,7 +66,7 @@ class Automaton::Daneel
   end
 
   def report
-    placed? ? "My current position is X:#{pos_x} Y:#{pos_y} facing #{facing}" : "I have no idea where I am"
+    placed? ? "My current position is X:#{pos_x} Y:#{pos_y} facing #{facing.capitalize}" : "I have no idea where I am"
   end
 
   def placed?
